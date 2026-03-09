@@ -367,11 +367,138 @@ h3 {
   }
 }
 
+/* About Section */
+.about-content {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 28px;
+  align-items: start;
+}
+
+.about-narrative p {
+  margin: 0 0 16px;
+  font-size: 1.06rem;
+  line-height: 1.7;
+}
+
+.about-narrative p:last-child {
+  margin-bottom: 0;
+}
+
+.value-proposition {
+  background: var(--panel);
+  border: 1px solid rgba(255, 255, 255, 0.62);
+  border-radius: 24px;
+  padding: 24px;
+}
+
+.value-proposition h3 {
+  margin-bottom: 16px;
+  color: var(--accent-deep);
+}
+
+.value-proposition ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.value-proposition li {
+  margin-bottom: 12px;
+  line-height: 1.6;
+}
+
+.value-proposition li:last-child {
+  margin-bottom: 0;
+}
+
+/* Projects Section */
+.section-intro {
+  max-width: 72ch;
+  margin: -8px 0 24px;
+  font-size: 1.02rem;
+  color: var(--ink-muted);
+}
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+.project-card {
+  background: var(--panel);
+  border: 1px solid rgba(255, 255, 255, 0.62);
+  border-radius: 24px;
+  padding: 24px;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.project-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(56, 43, 27, 0.14);
+}
+
+.project-tag {
+  display: inline-block;
+  padding: 4px 14px;
+  margin-bottom: 14px;
+  background: linear-gradient(135deg, rgba(158, 91, 42, 0.12), rgba(158, 91, 42, 0.06));
+  border: 1px solid rgba(158, 91, 42, 0.2);
+  border-radius: 999px;
+  color: var(--accent-deep);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.project-card h3 {
+  font-size: 1.25rem;
+  margin-bottom: 10px;
+}
+
+.project-description {
+  margin: 0 0 18px;
+  font-size: 0.96rem;
+  line-height: 1.65;
+}
+
+.project-details {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+
+.detail-item {
+  display: flex;
+  gap: 12px;
+  font-size: 0.9rem;
+}
+
+.detail-label {
+  flex-shrink: 0;
+  min-width: 80px;
+  color: var(--accent-deep);
+  font-weight: 700;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding-top: 2px;
+}
+
+.detail-value {
+  color: var(--ink-muted);
+}
+
 @media (max-width: 920px) {
   .hero-grid,
   .timeline-item,
   .split-layout,
-  .metrics-grid {
+  .metrics-grid,
+  .about-content,
+  .projects-grid {
     grid-template-columns: 1fr;
   }
 
