@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ML Algorithm Types — Visual Framework | Derrick Karake</title>
+<meta name="viewport" content="width=1280, initial-scale=1">
+<style>
+  :root {
+    --bg: #0f172a;
+    --panel: #1e293b;
+    --panel-2: #334155;
+    --accent: #38bdf8;
+    --supervised: #3b82f6;
+    --unsupervised: #10b981;
+    --tabular: #f59e0b;
+    --cv: #ef4444;
+    --nlp: #a855f7;
+    --genai: #ec4899;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", sans-serif;
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+    color: var(--text);
+    padding: 40px 24px;
+  }
+  .page {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  header {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  header h1 {
+    margin: 0;
+    font-size: 38px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+  }
+  header .subtitle {
+    color: var(--muted);
+    margin-top: 6px;
+    font-size: 16px;
+  }
+  header .author {
+    color: var(--accent);
+    margin-top: 4px;
+    font-size: 14px;
+  }
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+    margin: 24px 0 32px;
+    padding: 16px;
+    background: rgba(30, 41, 59, 0.6);
+    border-radius: 12px;
+    border: 1px solid var(--panel-2);
+  }
+  .legend-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .legend-section h4 {
+    margin: 0;
+    font-size: 13px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .pill {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    color: white;
+  }
+  .pill.s { background: var(--supervised); }
+  .pill.u { background: var(--unsupervised); }
+  .pill.tabular { background: var(--tabular); color: #1f2937; }
+  .pill.cv { background: var(--cv); }
+  .pill.nlp { background: var(--nlp); }
+  .pill.genai { background: var(--genai); }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    gap: 18px;
+  }
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--panel-2);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: transform 0.15s ease;
+  }
+  .card:hover { transform: translateY(-3px); }
+  .card .title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+  }
+  .card h3 {
+    margin: 0;
+    font-size: 18px;
+    color: white;
+  }
+  .card .badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .card .desc {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--text);
+  }
+  .card .example {
+    font-size: 12px;
+    color: var(--muted);
+    border-top: 1px dashed var(--panel-2);
+    padding-top: 10px;
+  }
+  .card .example strong { color: var(--accent); }
+  footer {
+    margin-top: 40px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <h1>The Machine Learning Algorithm Map</h1>
+    <div class="subtitle">10 algorithms classified by learning style and primary application domain</div>
+    <div class="author">Derrick Karake · AIML-501 Workshop 1 · Portfolio Artifact</div>
+  </header>
+
+  <div class="legend">
+    <div class="legend-section">
+      <h4>Learning Style</h4>
+      <span class="pill s">S Supervised</span>
+      <span class="pill u">U Unsupervised / Self-supervised</span>
+    </div>
+    <div class="legend-section">
+      <h4>Domains</h4>
+      <span class="pill tabular">Tabular</span>
+      <span class="pill cv">Computer Vision</span>
+      <span class="pill nlp">NLP</span>
+      <span class="pill genai">Generative AI</span>
+    </div>
+  </div>
+
+  <div class="grid">
+
+    <div class="card">
+      <div class="title-row"><h3>1. Linear Regression</h3><span class="pill s">S</span></div>
+      <div class="badges"><span class="pill tabular">Tabular</span></div>
+      <div class="desc">Fits a straight-line relationship between input features and a continuous numeric target.</div>
+      <div class="example"><strong>Use case:</strong> Predicting a house's sale price from square footage, location, and age.</div>
+    </div>
+
+    <div class="card">
+      <div class="title-row"><h3>2. Logistic Regression</h3><span class="pill s">S</span></div>
+      <div class="badges"><span class="pill tabular">Tabular</span></div>
+      <div class="desc">Estimates the probability of a binary outcome using a sigmoid over a linear combination of features.</div>
+      <div class="example"><strong>Use case:</strong> Predicting whether a credit-card transaction is fraudulent.</div>
+    </div>
+
+    <div class="card">
+      <div class="title-row"><h3>3. Decision Tree</h3><span class="pill s">S</span></div>
+      <div class="badges"><span class="pill tabular">Tabular</span></div>
+      <div class="desc">Splits data on the most informative feature at each node, building a tree of yes/no questions.</div>
+      <div class="example"><strong>Use case:</strong> Sorting fruit by color, size, and weight (1.4 assignment).</div>
+    </div>
+
+    <div class="card">
+      <div class="title-row"><h3>4. Random Forest</h3><span class="pill s">S</span></div>
+      <div class="badges"><span class="pill tabular">Tabular</span></div>
+      <div class="desc">Trains many decision trees on bootstrapped data samples and averages their votes for stability and accuracy.</div>
+      <div class="example"><strong>Use case:</strong> Predicting customer churn from CRM history.</div>
+    </div>
+
+    <div class="card">
+      <div class="title-row"><h3>5. K-Means Clustering</h3><span class="pill u">U</span></div>
+      <div class="badges"><span class="pill tabular">Tabular</span><span class="pill cv">CV</span></div>
+      <div class="desc">Groups data into K clusters by iteratively assigning points to the nearest centroid and re-computing centers.</div>
+      <div class="example"><strong>Use case:</strong> Customer segmentation for a retailer's marketing campaigns.</div>
+    </div>
+
+    <div class="card">
+      <div class="title-row"><h3>6. K-Nearest Neighbors</h3><span class="pill s">S</span></div>
+      <div class="badges"><span class="pill tabular">Tabular</span><span class="pill cv">CV</span></div>
+      <div class="desc">Classifies a new point by majority vote of its K closest neighbors in feature space.</div>
+      <div class="example"><strong>Use case:</strong> Recommending similar products via user-item proximity.</div>
+    </div>
+
+    <div class="card">
+      <div class="title-row"><h3>7. Convolutional Neural Network (CNN)</h3><span class="pill s">S</span></div>
+      <div class="badges"><span class="pill cv">Computer Vision</span></div>
+      <div class="desc">Stacks convolution and pooling layers to learn local-to-global spatial features from images.</div>
+      <div class="example"><strong>Use case:</strong> Detecting tumors in medical scans; reading street signs for autonomous driving.</div>
+    </div>
+
+    <div class="card">
+      <div class="title-row"><h3>8. Recurrent Neural Networks / LSTM</h3><span class="pill s">S</span></div>
+      <div class="badges"><span class="pill nlp">NLP</span><span class="pill tabular">Time Series</span></div>
+      <div class="desc">Processes sequences step-by-step while carrying internal state, capturing temporal dependencies.</div>
+      <div class="example"><strong>Use case:</strong> Forecasting stock prices; speech-to-text transcription.</div>
+    </div>
+
+    <div class="card">
+      <div class="title-row"><h3>9. Transformer</h3><span class="pill s">S</span></div>
+      <div class="badges"><span class="pill nlp">NLP</span><span class="pill genai">GenAI</span><span class="pill cv">CV</span></div>
+      <div class="desc">Uses self-attention to weigh relationships across all tokens in a sequence in parallel — powering modern LLMs.</div>
+      <div class="example"><strong>Use case:</strong> Powers ChatGPT, Claude, Gemini, and most modern AI assistants.</div>
+    </div>
+
+    <div class="card">
+      <div class="title-row"><h3>10. Generative Adversarial Network (GAN)</h3><span class="pill u">U</span></div>
+      <div class="badges"><span class="pill genai">GenAI</span><span class="pill cv">CV</span></div>
+      <div class="desc">Two networks (generator vs discriminator) train against each other; the generator learns to produce realistic samples.</div>
+      <div class="example"><strong>Use case:</strong> Generating photorealistic faces, art, and synthetic training data.</div>
+    </div>
+
+  </div>
+
+  <footer>
+    Created by Derrick Karake · AIML-501 Model Development · Workshop 1 · 3SU2026 · IWU
+  </footer>
+</div>
+</body>
+</html>
