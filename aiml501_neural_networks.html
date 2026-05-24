@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Visualizing Neural Networks | AIML-501 Workshop 2 | Derrick Karake</title>
+<meta name="viewport" content="width=1280, initial-scale=1">
+<style>
+  :root {
+    --bg: #0b1220;
+    --bg2: #1e1b4b;
+    --panel: #1e293b;
+    --panel-2: #334155;
+    --accent: #38bdf8;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --layer-input: #f59e0b;
+    --layer-hidden: #a855f7;
+    --layer-output: #10b981;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", sans-serif;
+    background: linear-gradient(135deg, var(--bg) 0%, var(--bg2) 100%);
+    color: var(--text);
+    padding: 40px 24px;
+  }
+  .page { max-width: 1280px; margin: 0 auto; }
+  header { text-align: center; margin-bottom: 40px; }
+  header h1 { margin: 0; font-size: 38px; font-weight: 800; letter-spacing: -0.5px; }
+  header .subtitle { color: var(--muted); margin-top: 6px; font-size: 16px; }
+  header .author { color: var(--accent); margin-top: 4px; font-size: 14px; }
+  .diagram {
+    background: var(--panel);
+    border: 1px solid var(--panel-2);
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 32px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  }
+  .diagram h2 { margin: 0 0 24px 0; font-size: 22px; }
+  svg.network { width: 100%; height: 360px; }
+  .legend {
+    display: flex; gap: 18px; flex-wrap: wrap; margin-top: 18px;
+    font-size: 13px; color: var(--muted);
+  }
+  .legend-dot {
+    display: inline-block; width: 12px; height: 12px; border-radius: 50%;
+    margin-right: 8px; vertical-align: middle;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+    gap: 18px;
+  }
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--panel-2);
+    border-radius: 16px;
+    padding: 22px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+    transition: transform 0.15s ease;
+  }
+  .card:hover { transform: translateY(-3px); }
+  .card .num {
+    display: inline-block; width: 28px; height: 28px;
+    background: var(--accent); color: #0b1220; border-radius: 50%;
+    font-weight: 700; text-align: center; line-height: 28px;
+    margin-right: 10px; font-size: 14px;
+  }
+  .card h3 { margin: 0 0 8px 0; font-size: 18px; display: inline-block; vertical-align: middle; }
+  .card .what { font-size: 13px; color: var(--muted); margin: 6px 0 12px 0; }
+  .card .why { font-size: 13px; line-height: 1.5; }
+  .card .ex {
+    margin-top: 12px; padding-top: 10px;
+    border-top: 1px dashed var(--panel-2);
+    font-size: 12px; color: var(--muted);
+  }
+  .card .ex strong { color: var(--accent); }
+  .summary {
+    background: linear-gradient(135deg, #1e293b 0%, #312e81 100%);
+    border: 1px solid var(--panel-2);
+    border-radius: 16px;
+    padding: 28px;
+    margin-top: 32px;
+  }
+  .summary h2 { margin: 0 0 14px 0; }
+  .summary p { font-size: 14px; line-height: 1.6; margin: 0 0 12px 0; }
+  footer { margin-top: 40px; text-align: center; color: var(--muted); font-size: 12px; }
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <h1>Visualizing Neural Networks</h1>
+    <div class="subtitle">A practical map of the six core components that make a neural network learn</div>
+    <div class="author">Derrick Karake · AIML-501 Workshop 2 · Portfolio Artifact</div>
+  </header>
+
+  <div class="diagram">
+    <h2>Architecture — How Data Flows</h2>
+    <svg class="network" viewBox="0 0 1100 360">
+      <!-- Connections (drawn first so circles sit on top) -->
+      <g stroke="#334155" stroke-width="1" opacity="0.55">
+        <!-- Input → Hidden 1 -->
+        <line x1="180" y1="90" x2="420" y2="80" /><line x1="180" y1="90" x2="420" y2="160" /><line x1="180" y1="90" x2="420" y2="240" /><line x1="180" y1="90" x2="420" y2="320" />
+        <line x1="180" y1="190" x2="420" y2="80" /><line x1="180" y1="190" x2="420" y2="160" /><line x1="180" y1="190" x2="420" y2="240" /><line x1="180" y1="190" x2="420" y2="320" />
+        <line x1="180" y1="290" x2="420" y2="80" /><line x1="180" y1="290" x2="420" y2="160" /><line x1="180" y1="290" x2="420" y2="240" /><line x1="180" y1="290" x2="420" y2="320" />
+        <!-- Hidden 1 → Hidden 2 -->
+        <line x1="420" y1="80" x2="660" y2="100" /><line x1="420" y1="80" x2="660" y2="200" /><line x1="420" y1="80" x2="660" y2="300" />
+        <line x1="420" y1="160" x2="660" y2="100" /><line x1="420" y1="160" x2="660" y2="200" /><line x1="420" y1="160" x2="660" y2="300" />
+        <line x1="420" y1="240" x2="660" y2="100" /><line x1="420" y1="240" x2="660" y2="200" /><line x1="420" y1="240" x2="660" y2="300" />
+        <line x1="420" y1="320" x2="660" y2="100" /><line x1="420" y1="320" x2="660" y2="200" /><line x1="420" y1="320" x2="660" y2="300" />
+        <!-- Hidden 2 → Output -->
+        <line x1="660" y1="100" x2="920" y2="150" /><line x1="660" y1="100" x2="920" y2="250" />
+        <line x1="660" y1="200" x2="920" y2="150" /><line x1="660" y1="200" x2="920" y2="250" />
+        <line x1="660" y1="300" x2="920" y2="150" /><line x1="660" y1="300" x2="920" y2="250" />
+      </g>
+      <!-- Input Layer -->
+      <g>
+        <text x="180" y="40" fill="#f59e0b" text-anchor="middle" font-size="14" font-weight="700">INPUT LAYER</text>
+        <circle cx="180" cy="90" r="22" fill="#f59e0b" />
+        <circle cx="180" cy="190" r="22" fill="#f59e0b" />
+        <circle cx="180" cy="290" r="22" fill="#f59e0b" />
+      </g>
+      <!-- Hidden Layer 1 -->
+      <g>
+        <text x="420" y="40" fill="#a855f7" text-anchor="middle" font-size="14" font-weight="700">HIDDEN LAYER 1</text>
+        <circle cx="420" cy="80" r="22" fill="#a855f7" />
+        <circle cx="420" cy="160" r="22" fill="#a855f7" />
+        <circle cx="420" cy="240" r="22" fill="#a855f7" />
+        <circle cx="420" cy="320" r="22" fill="#a855f7" />
+      </g>
+      <!-- Hidden Layer 2 -->
+      <g>
+        <text x="660" y="60" fill="#a855f7" text-anchor="middle" font-size="14" font-weight="700">HIDDEN LAYER 2</text>
+        <circle cx="660" cy="100" r="22" fill="#a855f7" />
+        <circle cx="660" cy="200" r="22" fill="#a855f7" />
+        <circle cx="660" cy="300" r="22" fill="#a855f7" />
+      </g>
+      <!-- Output Layer -->
+      <g>
+        <text x="920" y="110" fill="#10b981" text-anchor="middle" font-size="14" font-weight="700">OUTPUT LAYER</text>
+        <circle cx="920" cy="150" r="22" fill="#10b981" />
+        <circle cx="920" cy="250" r="22" fill="#10b981" />
+      </g>
+      <!-- Flow label -->
+      <text x="550" y="350" fill="#94a3b8" text-anchor="middle" font-size="13">Data flows left → right (forward pass); errors flow right → left (backpropagation)</text>
+    </svg>
+    <div class="legend">
+      <span><span class="legend-dot" style="background:#f59e0b"></span>Input Layer (raw features)</span>
+      <span><span class="legend-dot" style="background:#a855f7"></span>Hidden Layers (learned representations)</span>
+      <span><span class="legend-dot" style="background:#10b981"></span>Output Layer (prediction)</span>
+    </div>
+  </div>
+
+  <div class="grid">
+
+    <div class="card">
+      <span class="num">1</span><h3>Layers</h3>
+      <div class="what">Stacks of neurons grouped by role.</div>
+      <div class="why">A neural network is organized into an input layer (raw features), one or more hidden layers (learned representations), and an output layer (prediction). Each layer refines what the previous one passed along, transforming inputs into successively more abstract features.</div>
+      <div class="ex"><strong>Example:</strong> a 3-layer image classifier might use the input layer for pixel values, hidden layers for edges and shapes, and the output layer for class probabilities.</div>
+    </div>
+
+    <div class="card">
+      <span class="num">2</span><h3>Neurons</h3>
+      <div class="what">Single units that compute a weighted sum and pass it through a non-linearity.</div>
+      <div class="why">Each neuron takes inputs, multiplies them by its weights, adds a bias, and feeds the result through an activation function. The output becomes input for the next layer. Many simple neurons working together approximate very complex functions.</div>
+      <div class="ex"><strong>Example:</strong> a neuron in a sentiment model might fire strongly when its inputs combine to indicate negative tone.</div>
+    </div>
+
+    <div class="card">
+      <span class="num">3</span><h3>Weights</h3>
+      <div class="what">The learnable parameters that decide how much each input matters.</div>
+      <div class="why">Weights are the dials the network turns during training. A larger weight on an input means that input has a stronger influence on a neuron's output. The entire "knowledge" of a trained network lives in its weight values.</div>
+      <div class="ex"><strong>Example:</strong> in a fraud detector, the weight on "transaction amount" usually grows larger than the weight on "transaction time" because the size matters more than the hour.</div>
+    </div>
+
+    <div class="card">
+      <span class="num">4</span><h3>Activation Functions</h3>
+      <div class="what">Non-linear transformations applied to each neuron's output.</div>
+      <div class="why">Without activations, stacking layers is just stacking linear functions — no extra power. Activations like ReLU, sigmoid, and tanh introduce non-linearity so the network can model curved, complex relationships. ReLU is the modern default for hidden layers.</div>
+      <div class="ex"><strong>Example:</strong> ReLU passes any positive value through unchanged and zeros out negatives — simple, fast, and surprisingly effective.</div>
+    </div>
+
+    <div class="card">
+      <span class="num">5</span><h3>Loss Functions</h3>
+      <div class="what">A single number that scores how wrong the network's prediction was.</div>
+      <div class="why">A loss function compares the network's output to the correct answer and produces an error score. Training is the process of making this number as small as possible. Different problems use different losses: cross-entropy for classification, mean squared error for regression.</div>
+      <div class="ex"><strong>Example:</strong> if a model predicts 0.7 probability of "dog" but the true label is 1.0, cross-entropy gives a positive loss that the optimizer will then try to shrink.</div>
+    </div>
+
+    <div class="card">
+      <span class="num">6</span><h3>Optimization Algorithms</h3>
+      <div class="what">The recipe for adjusting weights to reduce the loss.</div>
+      <div class="why">Optimizers use backpropagation to compute how each weight contributed to the error, then nudge each weight in the direction that lowers the loss. Stochastic Gradient Descent (SGD), Adam, and RMSProp are the most common choices. Adam is the modern default because it adapts the step size per parameter.</div>
+      <div class="ex"><strong>Example:</strong> after each mini-batch, Adam updates every weight a small amount — over many batches the weights converge to values that produce accurate predictions.</div>
+    </div>
+
+  </div>
+
+  <div class="summary">
+    <h2>Why Visualizing Neural Networks Matters</h2>
+    <p>Translating equations into diagrams changed how I think about neural networks. The math always describes the same six pieces — layers, neurons, weights, activations, loss, and optimizers — but the picture makes their relationships immediate. You can see why a deeper network learns richer features, why activations matter, and why the loss function is what shapes everything that happens in training.</p>
+    <p>For non-technical stakeholders, this kind of artifact is the difference between "trust me, the model works" and "here is how the model works." That second version is the one that opens doors in industry — it lets engineers, product managers, and business leaders speak the same language about what an AI system is actually doing.</p>
+    <p>Going forward, I plan to keep updating this artifact each time I learn a new architecture family — CNNs, RNNs, Transformers — so the visual library grows alongside my technical depth.</p>
+  </div>
+
+  <footer>
+    Derrick Karake · AIML-501 Model Development · Workshop 2 · 3SU2026 · Indiana Wesleyan University
+  </footer>
+</div>
+</body>
+</html>
