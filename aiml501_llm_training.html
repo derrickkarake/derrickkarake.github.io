@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>LLM Training Infrastructure: Process &amp; Costs | AIML-501 Workshop 3 | Derrick Karake</title>
+<meta name="viewport" content="width=1280, initial-scale=1">
+<style>
+  :root {
+    --bg: #0b1220;
+    --bg2: #1e1b4b;
+    --panel: #1e293b;
+    --panel-2: #334155;
+    --accent: #38bdf8;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --gpt: #10b981;
+    --claude: #d97706;
+    --llama: #6366f1;
+    --gemini: #ec4899;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", sans-serif;
+    background: linear-gradient(135deg, var(--bg) 0%, var(--bg2) 100%);
+    color: var(--text);
+    padding: 40px 24px;
+  }
+  .page { max-width: 1280px; margin: 0 auto; }
+  header { text-align: center; margin-bottom: 40px; }
+  header h1 { margin: 0; font-size: 36px; font-weight: 800; letter-spacing: -0.5px; }
+  header .subtitle { color: var(--muted); margin-top: 6px; font-size: 16px; }
+  header .author { color: var(--accent); margin-top: 4px; font-size: 14px; }
+
+  .pipeline {
+    background: var(--panel);
+    border: 1px solid var(--panel-2);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 28px;
+  }
+  .pipeline h2 { margin: 0 0 24px 0; font-size: 22px; }
+  .steps { display: flex; flex-wrap: wrap; gap: 12px; }
+  .step {
+    flex: 1 1 200px;
+    background: linear-gradient(135deg, #1e293b 0%, #312e81 100%);
+    border: 1px solid var(--panel-2);
+    border-radius: 12px;
+    padding: 16px;
+    position: relative;
+  }
+  .step .step-num {
+    position: absolute; top: -10px; left: -10px;
+    width: 28px; height: 28px;
+    background: var(--accent); color: #0b1220;
+    border-radius: 50%; font-weight: 700;
+    text-align: center; line-height: 28px; font-size: 14px;
+  }
+  .step h3 { margin: 4px 0 8px 0; font-size: 15px; color: white; }
+  .step p { margin: 0; font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+  .resources {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .resource {
+    background: var(--panel);
+    border: 1px solid var(--panel-2);
+    border-radius: 14px;
+    padding: 20px;
+  }
+  .resource .icon {
+    font-size: 28px; margin-bottom: 8px; display: block;
+  }
+  .resource h3 { margin: 0 0 8px 0; font-size: 17px; }
+  .resource .detail { font-size: 13px; line-height: 1.5; color: var(--text); margin-bottom: 10px; }
+  .resource .example { font-size: 12px; color: var(--muted); border-top: 1px dashed var(--panel-2); padding-top: 8px; }
+  .resource .example strong { color: var(--accent); }
+
+  .models {
+    background: var(--panel);
+    border: 1px solid var(--panel-2);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 28px;
+    overflow-x: auto;
+  }
+  .models h2 { margin: 0 0 16px 0; font-size: 22px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 700px; }
+  th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--panel-2); }
+  th { color: var(--accent); font-weight: 600; font-size: 12px; letter-spacing: 0.5px; text-transform: uppercase; }
+  td.model { font-weight: 600; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 600; color: white; }
+  .gpt { background: var(--gpt); }
+  .claude { background: var(--claude); }
+  .llama { background: var(--llama); }
+  .gemini { background: var(--gemini); }
+
+  .takeaways {
+    background: linear-gradient(135deg, #1e293b 0%, #312e81 100%);
+    border: 1px solid var(--panel-2);
+    border-radius: 16px;
+    padding: 24px;
+  }
+  .takeaways h2 { margin: 0 0 14px 0; }
+  .takeaways p { font-size: 14px; line-height: 1.6; margin: 0 0 10px 0; }
+  footer { margin-top: 40px; text-align: center; color: var(--muted); font-size: 12px; }
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <h1>LLM Training Infrastructure</h1>
+    <div class="subtitle">The training process and resource costs of frontier generative AI models</div>
+    <div class="author">Derrick Karake · AIML-501 Workshop 3 · Portfolio Artifact</div>
+  </header>
+
+  <div class="pipeline">
+    <h2>The Training Pipeline — From Raw Data to Deployed Model</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Data Collection</h3>
+        <p>Crawl + curate hundreds of TB of text/code/images from the public web, books, code repos, and licensed corpora.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Cleaning &amp; Filtering</h3>
+        <p>Deduplicate, filter low-quality and harmful content, tokenize, and balance the mixture across languages and domains.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Pre-Training</h3>
+        <p>Run weeks-to-months of distributed training on thousands of GPUs/TPUs using next-token prediction. This is the most expensive step.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <h3>Supervised Fine-Tuning</h3>
+        <p>Train on human-written instruction–response demonstrations to teach the model how to follow instructions.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <h3>RLHF / Alignment</h3>
+        <p>Learn from human preference rankings (and increasingly AI-generated feedback) to make responses safer, more useful, and more honest.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">6</div>
+        <h3>Evaluation</h3>
+        <p>Run capability, safety, and red-team benchmarks. Iterate on the model until it meets release criteria.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">7</div>
+        <h3>Deployment</h3>
+        <p>Serve via API or product. Inference runs on a fleet of GPUs/TPUs at far lower per-query cost than training but at much larger total scale.</p>
+      </div>
+    </div>
+  </div>
+
+  <h2 style="margin: 0 0 16px 0; font-size: 22px;">The Four Cost Categories</h2>
+  <div class="resources">
+    <div class="resource">
+      <span class="icon">📚</span>
+      <h3>Data</h3>
+      <div class="detail">Acquiring, licensing, cleaning, and labeling the training corpus. Includes scraping infrastructure, vendor data deals, and the human annotators who write demonstrations and rank responses.</div>
+      <div class="example"><strong>Example:</strong> OpenAI is estimated to spend hundreds of millions of dollars per year on data alone — including licensing news, books, and code, plus thousands of contractors writing and rating responses.</div>
+    </div>
+    <div class="resource">
+      <span class="icon">🖥️</span>
+      <h3>Compute</h3>
+      <div class="detail">The dominant cost. Pre-training a frontier model requires tens of thousands of GPUs/TPUs running for weeks. Capital expense for the cluster, plus operating cost while it runs.</div>
+      <div class="example"><strong>Example:</strong> GPT-4 is widely estimated to have cost between $50M and $100M+ in compute alone. Hardware procurement and depreciation push the total significantly higher.</div>
+    </div>
+    <div class="resource">
+      <span class="icon">⚡</span>
+      <h3>Energy</h3>
+      <div class="detail">Powering and cooling the cluster. Modern training runs draw tens of megawatts continuously, with substantial water consumption for cooling. Both an operational cost and an environmental footprint.</div>
+      <div class="example"><strong>Example:</strong> A large training run can consume several gigawatt-hours of electricity — comparable to the annual energy use of a small town.</div>
+    </div>
+    <div class="resource">
+      <span class="icon">⏱️</span>
+      <h3>Time</h3>
+      <div class="detail">Pre-training runs span weeks to months. Failed runs or instabilities can erase weeks of progress. Time is a real cost because compute is rented or amortized while the run completes.</div>
+      <div class="example"><strong>Example:</strong> Llama 3 (405B) was trained on a 16,000-GPU cluster over roughly 54 days. Any restart at scale is expensive.</div>
+    </div>
+  </div>
+
+  <div class="models">
+    <h2>Specific Frontier Models (Public &amp; Estimated Figures)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Model</th>
+          <th>Org</th>
+          <th>Params (~)</th>
+          <th>Training Data</th>
+          <th>Compute</th>
+          <th>Est. Training Cost</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="model"><span class="badge gpt">GPT-4</span></td>
+          <td>OpenAI</td>
+          <td>1.7T (MoE, est.)</td>
+          <td>~13T tokens (est.)</td>
+          <td>~25,000 A100s, ~90 days</td>
+          <td>$50M – $100M+</td>
+        </tr>
+        <tr>
+          <td class="model"><span class="badge claude">Claude 3 Opus</span></td>
+          <td>Anthropic</td>
+          <td>Undisclosed</td>
+          <td>Undisclosed; web + licensed</td>
+          <td>Large H100 cluster (TPU + GPU mix)</td>
+          <td>Tens of $M (est.)</td>
+        </tr>
+        <tr>
+          <td class="model"><span class="badge llama">Llama 3.1 405B</span></td>
+          <td>Meta</td>
+          <td>405B (dense)</td>
+          <td>15.6T tokens</td>
+          <td>16,000 H100s, ~54 days, ~30M GPU-hours</td>
+          <td>$60M – $100M (compute est.)</td>
+        </tr>
+        <tr>
+          <td class="model"><span class="badge gemini">Gemini 1.5 Pro</span></td>
+          <td>Google DeepMind</td>
+          <td>Undisclosed (MoE)</td>
+          <td>Multi-trillion tokens, multimodal</td>
+          <td>TPU v5 pods</td>
+          <td>Tens of $M+ (est.)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="takeaways">
+    <h2>Why This Matters</h2>
+    <p>Frontier LLM training is now one of the most capital-intensive activities in software. The combination of data acquisition, compute, energy, and time means that only a handful of organizations in the world can afford to train models at this scale. That concentration has real consequences for who shapes AI capabilities and who benefits from them.</p>
+    <p>For engineers and product teams, the practical lesson is that you almost never need to train a frontier model from scratch. The cost-effective path is to start from a pre-trained open or licensed model and adapt it — through fine-tuning, retrieval, or prompt engineering — to a specific task. Understanding the cost stack above is what makes that build-vs-buy decision rational rather than aspirational.</p>
+    <p>For everyone, the energy and water footprint of training and inference is a reminder that AI is not a free, weightless utility. Responsible deployment means asking whether the value delivered by a model justifies its resource cost — at the model level, and at the per-query level.</p>
+  </div>
+
+  <footer>
+    Derrick Karake · AIML-501 Model Development · Workshop 3 · 3SU2026 · Indiana Wesleyan University
+  </footer>
+</div>
+</body>
+</html>
