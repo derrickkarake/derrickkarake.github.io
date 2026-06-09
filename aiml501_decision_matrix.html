@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Pre-Trained Model Decision Matrix | AIML-501 Workshop 5 | Derrick Karake</title>
+<meta name="viewport" content="width=1280, initial-scale=1">
+<style>
+  :root {
+    --bg: #0b1220;
+    --bg2: #1e1b4b;
+    --panel: #1e293b;
+    --panel-2: #334155;
+    --accent: #38bdf8;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --nlp: #a855f7;
+    --vision: #ef4444;
+    --tabular: #f59e0b;
+    --good: #10b981;
+    --warn: #f59e0b;
+    --bad: #ef4444;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", sans-serif;
+    background: linear-gradient(135deg, var(--bg) 0%, var(--bg2) 100%);
+    color: var(--text);
+    padding: 40px 24px;
+  }
+  .page { max-width: 1280px; margin: 0 auto; }
+  header { text-align: center; margin-bottom: 36px; }
+  header h1 { margin: 0; font-size: 36px; font-weight: 800; letter-spacing: -0.5px; }
+  header .subtitle { color: var(--muted); margin-top: 6px; font-size: 16px; max-width: 800px; margin: 6px auto 0; }
+  header .author { color: var(--accent); margin-top: 4px; font-size: 14px; }
+  .intro {
+    background: var(--panel);
+    border: 1px solid var(--panel-2);
+    border-radius: 14px;
+    padding: 22px;
+    margin-bottom: 28px;
+  }
+  .intro h2 { margin: 0 0 10px 0; font-size: 20px; }
+  .intro p { margin: 0; font-size: 14px; line-height: 1.6; }
+
+  .matrix {
+    background: var(--panel);
+    border: 1px solid var(--panel-2);
+    border-radius: 14px;
+    padding: 22px;
+    margin-bottom: 28px;
+    overflow-x: auto;
+  }
+  .matrix h2 { margin: 0 0 16px 0; font-size: 22px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 900px; }
+  th, td { padding: 12px; text-align: left; border-bottom: 1px solid var(--panel-2); vertical-align: top; }
+  th { color: var(--accent); font-weight: 600; font-size: 12px; letter-spacing: 0.5px; text-transform: uppercase; }
+  td.model { font-weight: 700; color: white; }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 600; color: white; margin-right: 6px; }
+  .nlp { background: var(--nlp); }
+  .vision { background: var(--vision); }
+  .tabular { background: var(--tabular); }
+  .score { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; }
+  .score.good { background: rgba(16,185,129,0.2); color: var(--good); border: 1px solid var(--good); }
+  .score.warn { background: rgba(245,158,11,0.2); color: var(--warn); border: 1px solid var(--warn); }
+  .score.bad { background: rgba(239,68,68,0.2); color: var(--bad); border: 1px solid var(--bad); }
+
+  .recommendations {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .rec-card {
+    background: var(--panel);
+    border: 1px solid var(--panel-2);
+    border-radius: 14px;
+    padding: 20px;
+    border-left: 4px solid var(--accent);
+  }
+  .rec-card h3 { margin: 0 0 8px 0; font-size: 16px; color: white; }
+  .rec-card p { font-size: 13px; line-height: 1.55; margin: 0; }
+
+  .conclusion {
+    background: linear-gradient(135deg, #1e293b 0%, #312e81 100%);
+    border: 1px solid var(--panel-2);
+    border-radius: 16px;
+    padding: 26px;
+  }
+  .conclusion h2 { margin: 0 0 14px 0; }
+  .conclusion p { font-size: 14px; line-height: 1.6; margin: 0 0 10px 0; }
+  footer { margin-top: 36px; text-align: center; color: var(--muted); font-size: 12px; }
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <h1>Pre-Trained Model Decision Matrix</h1>
+    <div class="subtitle">Comparing five frontier pre-trained models across NLP, Computer Vision, and Tabular domains on size, accuracy, speed, and explainability</div>
+    <div class="author">Derrick Karake · AIML-501 Workshop 5 · Portfolio Artifact</div>
+  </header>
+
+  <div class="intro">
+    <h2>Why This Matters</h2>
+    <p>Choosing a pre-trained model is rarely about picking "the best" — it is about picking the right trade-off for a specific deployment. A model that wins on benchmarks may be too large to serve at scale, too slow for an edge device, or too opaque for a regulated industry. This decision matrix compares five widely used pre-trained models across the dimensions that actually drive deployment decisions: model size, accuracy, inference speed, explainability, and ease of integration. The recommendation that follows depends entirely on what you are trying to ship.</p>
+  </div>
+
+  <div class="matrix">
+    <h2>Decision Matrix</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Model</th>
+          <th>Domain</th>
+          <th>Size (Params)</th>
+          <th>Accuracy</th>
+          <th>Inference Speed</th>
+          <th>Explainability</th>
+          <th>Integration</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="model">GPT-4 / GPT-4o</td>
+          <td><span class="badge nlp">NLP / GenAI</span></td>
+          <td>~1.7T (MoE est.)</td>
+          <td><span class="score good">Highest</span> SOTA on MMLU, HumanEval</td>
+          <td><span class="score bad">Slow</span> ~30–100 tokens/s</td>
+          <td><span class="score bad">Low</span> Opaque, requires reasoning traces</td>
+          <td><span class="score good">Excellent</span> OpenAI API, mature SDKs</td>
+        </tr>
+        <tr>
+          <td class="model">BERT (base)</td>
+          <td><span class="badge nlp">NLP</span></td>
+          <td>110M</td>
+          <td><span class="score warn">Strong</span> for classification/NER, not generation</td>
+          <td><span class="score good">Fast</span> ~10ms/inference on GPU</td>
+          <td><span class="score warn">Moderate</span> Attention visualization tools</td>
+          <td><span class="score good">Excellent</span> Hugging Face ecosystem</td>
+        </tr>
+        <tr>
+          <td class="model">MobileNetV3</td>
+          <td><span class="badge vision">Computer Vision</span></td>
+          <td>5.4M</td>
+          <td><span class="score warn">Good</span> ~75% top-1 ImageNet</td>
+          <td><span class="score good">Very Fast</span> Designed for mobile / edge</td>
+          <td><span class="score warn">Moderate</span> Grad-CAM, saliency maps</td>
+          <td><span class="score good">Excellent</span> TFLite, Core ML, ONNX</td>
+        </tr>
+        <tr>
+          <td class="model">EfficientNet-B7</td>
+          <td><span class="badge vision">Computer Vision</span></td>
+          <td>66M</td>
+          <td><span class="score good">Excellent</span> ~84.4% top-1 ImageNet</td>
+          <td><span class="score warn">Moderate</span> Server GPU class</td>
+          <td><span class="score warn">Moderate</span> Same XAI tools as other CNNs</td>
+          <td><span class="score good">Strong</span> Available in TF / PyTorch</td>
+        </tr>
+        <tr>
+          <td class="model">XGBoost</td>
+          <td><span class="badge tabular">Tabular</span></td>
+          <td>N/A (ensemble of trees)</td>
+          <td><span class="score good">Excellent</span> SOTA on most tabular benchmarks</td>
+          <td><span class="score good">Very Fast</span> Tree inference is sub-ms</td>
+          <td><span class="score good">High</span> SHAP, feature importance, partial deps</td>
+          <td><span class="score good">Excellent</span> Wide language support</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 style="margin: 0 0 16px 0; font-size: 22px;">Recommendations by Scenario</h2>
+  <div class="recommendations">
+    <div class="rec-card">
+      <h3>"I need to ship a chatbot that reasons well"</h3>
+      <p>Use GPT-4 or Claude via API. Accept the latency and cost. Add citation grounding to recover some explainability and run prompt-injection filtering in your application layer.</p>
+    </div>
+    <div class="rec-card">
+      <h3>"I need fast NLP classification at scale"</h3>
+      <p>Fine-tune BERT-base or DistilBERT. You get 90% of the accuracy of a frontier model at 1% of the inference cost, and the model is small enough to serve on commodity hardware.</p>
+    </div>
+    <div class="rec-card">
+      <h3>"I need image recognition on a phone"</h3>
+      <p>MobileNetV3. Designed specifically for edge inference; ships well in TFLite and Core ML. EfficientNet is overkill unless you have a server backing the call.</p>
+    </div>
+    <div class="rec-card">
+      <h3>"I need image classification with the best accuracy"</h3>
+      <p>EfficientNet-B7 or similar. Acknowledge the latency cost and plan your serving stack accordingly. Use Grad-CAM for explainability on a per-prediction basis.</p>
+    </div>
+    <div class="rec-card">
+      <h3>"I have tabular data and need to defend every decision"</h3>
+      <p>XGBoost with SHAP. Tabular data is where classical ML still beats deep learning on most production benchmarks, and SHAP gives you a defensible per-prediction explanation that regulated industries accept.</p>
+    </div>
+    <div class="rec-card">
+      <h3>"I'm working in a regulated industry"</h3>
+      <p>Prioritize explainability over raw accuracy. XGBoost for tabular; BERT with attention visualization for text classification; avoid frontier LLMs for binding decisions unless you have a strong reviewer in the loop.</p>
+    </div>
+  </div>
+
+  <div class="conclusion">
+    <h2>Conclusion</h2>
+    <p>There is no universally best pre-trained model. There is only the right model for a specific combination of accuracy target, latency budget, deployment footprint, explainability requirement, and team expertise. The discipline of model selection is to be honest about which of those constraints actually binds your project — and to pick the simplest model that meets all of them. A 110M parameter BERT that ships next month will deliver more value than a 175B parameter GPT-4 deployment that never makes it past compliance review.</p>
+    <p>Explainability is the dimension most often under-weighted in academic comparisons and most often decisive in production. In regulated domains, the model that can explain itself wins even if it loses a few accuracy points. That is the trade-off this matrix is meant to make visible.</p>
+  </div>
+
+  <footer>
+    Derrick Karake · AIML-501 Model Development · Workshop 5 · 3SU2026 · Indiana Wesleyan University
+  </footer>
+</div>
+</body>
+</html>

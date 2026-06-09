@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Explainable AI: Why It Matters | AIML-501 Workshop 4 | Derrick Karake</title>
+<meta name="viewport" content="width=1280, initial-scale=1">
+<style>
+  :root {
+    --bg: #0b1220;
+    --bg2: #1e1b4b;
+    --panel: #1e293b;
+    --panel-2: #334155;
+    --accent: #38bdf8;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --challenge: #ef4444;
+    --solution: #10b981;
+    --validation: #f59e0b;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", sans-serif;
+    background: linear-gradient(135deg, var(--bg) 0%, var(--bg2) 100%);
+    color: var(--text);
+    padding: 40px 24px;
+  }
+  .page { max-width: 1280px; margin: 0 auto; }
+  header { text-align: center; margin-bottom: 36px; }
+  header h1 { margin: 0; font-size: 38px; font-weight: 800; letter-spacing: -0.5px; }
+  header .subtitle { color: var(--muted); margin-top: 6px; font-size: 16px; }
+  header .author { color: var(--accent); margin-top: 4px; font-size: 14px; }
+  .definition {
+    background: var(--panel);
+    border: 1px solid var(--panel-2);
+    border-radius: 14px;
+    padding: 22px 26px;
+    margin-bottom: 28px;
+    text-align: center;
+  }
+  .definition h2 { margin: 0 0 8px 0; font-size: 22px; }
+  .definition p { margin: 0; font-size: 15px; line-height: 1.6; color: var(--text); max-width: 880px; margin: 0 auto; }
+  .section { margin-bottom: 28px; }
+  .section h2 { font-size: 22px; margin: 0 0 16px 0; }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    gap: 16px;
+  }
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--panel-2);
+    border-radius: 14px;
+    padding: 20px;
+    border-left: 4px solid var(--accent);
+  }
+  .card.challenge { border-left-color: var(--challenge); }
+  .card.solution { border-left-color: var(--solution); }
+  .card.validation { border-left-color: var(--validation); }
+  .card h3 { margin: 0 0 8px 0; font-size: 16px; color: white; }
+  .card p { margin: 0; font-size: 13px; line-height: 1.55; color: var(--text); }
+  .card .ex { font-size: 12px; color: var(--muted); margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--panel-2); }
+  .card .ex strong { color: var(--accent); }
+  .takeaway {
+    background: linear-gradient(135deg, #1e293b 0%, #312e81 100%);
+    border: 1px solid var(--panel-2);
+    border-radius: 16px;
+    padding: 26px;
+  }
+  .takeaway h2 { margin: 0 0 14px 0; }
+  .takeaway p { font-size: 14px; line-height: 1.6; margin: 0 0 10px 0; }
+  footer { margin-top: 36px; text-align: center; color: var(--muted); font-size: 12px; }
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <h1>Explainable AI</h1>
+    <div class="subtitle">Why transparency in modern AI is non-negotiable — and how the industry is working toward it</div>
+    <div class="author">Derrick Karake · AIML-501 Workshop 4 · Portfolio Artifact</div>
+  </header>
+
+  <div class="definition">
+    <h2>What is Explainable AI (XAI)?</h2>
+    <p>Explainable AI is the practice of making the inputs, internal reasoning, and outputs of an AI system understandable to the humans who use it, audit it, or are affected by it. For frontier large language models like GPT, Claude, Gemini, and LLaMA — whose behavior emerges from billions of parameters — explainability is no longer a nice-to-have. It is the precondition for safe deployment in healthcare, finance, law, and any domain where a wrong answer carries real consequences.</p>
+  </div>
+
+  <div class="section">
+    <h2 style="color: var(--challenge);">Core Challenges in Explainability</h2>
+    <div class="grid">
+      <div class="card challenge">
+        <h3>1. Model Complexity</h3>
+        <p>Frontier LLMs have hundreds of billions of parameters. No human can audit them individually, and the relationships between them are emergent rather than designed.</p>
+        <div class="ex"><strong>Real-world impact:</strong> when GPT-4 produces a wrong medical answer, there is no single neuron or layer responsible — the failure is distributed across the network.</div>
+      </div>
+      <div class="card challenge">
+        <h3>2. Opaque Decision Paths</h3>
+        <p>Even when we know which tokens influenced an output, we rarely know <em>why</em> the model weighted them that way. Attention is correlational, not causal.</p>
+        <div class="ex"><strong>Real-world impact:</strong> "the model paid attention to age" does not tell us whether age caused the decision or was a proxy for something else.</div>
+      </div>
+      <div class="card challenge">
+        <h3>3. Regulatory and Legal Pressure</h3>
+        <p>The EU AI Act, the U.S. AI Bill of Rights blueprint, and sector-specific rules in finance and healthcare increasingly require <em>justifiable</em> decisions, not just accurate ones.</p>
+        <div class="ex"><strong>Real-world impact:</strong> a bank cannot deploy a credit model that cannot explain why it denied an applicant.</div>
+      </div>
+      <div class="card challenge">
+        <h3>4. Scale of Failure Modes</h3>
+        <p>An LLM serving millions of users will produce harmful, biased, or wrong outputs in long-tail cases that no internal test set fully covers.</p>
+        <div class="ex"><strong>Real-world impact:</strong> failures often surface in production first, in domains the team did not anticipate.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 style="color: var(--validation);">Validation Techniques That Build Trust</h2>
+    <div class="grid">
+      <div class="card validation">
+        <h3>Benchmarks &amp; Capability Evals</h3>
+        <p>MMLU, HumanEval, GSM8K, ARC-AGI, and domain-specific benchmarks measure raw capability and let teams compare model versions reproducibly.</p>
+      </div>
+      <div class="card validation">
+        <h3>Red-Teaming &amp; Adversarial Probing</h3>
+        <p>Internal and external researchers actively try to break the model — to elicit harmful content, biased outputs, or factual errors — before users do.</p>
+      </div>
+      <div class="card validation">
+        <h3>RLHF &amp; Constitutional AI</h3>
+        <p>Reinforcement learning from human (or AI) feedback shapes the model's behavior post-training toward being helpful, harmless, and honest.</p>
+      </div>
+      <div class="card validation">
+        <h3>Production Monitoring</h3>
+        <p>Aggregate metrics (refusal rate, regenerate-rate, thumbs-down) and targeted sampling catch drift and emergent failure modes in deployment.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 style="color: var(--solution);">Current Industry Solutions &amp; Techniques</h2>
+    <div class="grid">
+      <div class="card solution">
+        <h3>Attention &amp; Activation Visualization</h3>
+        <p>Tools like BertViz and the OpenAI activation atlases visualize which tokens or neurons fire for a given output, providing partial introspection.</p>
+      </div>
+      <div class="card solution">
+        <h3>Mechanistic Interpretability</h3>
+        <p>Anthropic, OpenAI, and academic labs are reverse-engineering specific circuits inside LLMs, identifying features (e.g., "Golden Gate Bridge neuron") and tracing how concepts combine.</p>
+      </div>
+      <div class="card solution">
+        <h3>Chain-of-Thought &amp; Reasoning Traces</h3>
+        <p>Asking the model to "think step by step" produces a reasoning trace that a human can audit — partial transparency, but useful in practice.</p>
+      </div>
+      <div class="card solution">
+        <h3>Citation &amp; Retrieval Grounding</h3>
+        <p>Retrieval-augmented systems (Perplexity, Bing Copilot, You.com) attach citations to outputs, letting users verify claims against their original sources.</p>
+      </div>
+      <div class="card solution">
+        <h3>Model Cards &amp; System Cards</h3>
+        <p>Standardized documentation publishes a model's intended use, training data summary, evaluation results, and known limitations — borrowed from datasheet practices in hardware.</p>
+      </div>
+      <div class="card solution">
+        <h3>SHAP, LIME, &amp; Local Explanations</h3>
+        <p>For tabular and tree-based models, established XAI tools attribute predictions back to specific input features — production-ready interpretability for narrower model classes.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="takeaway">
+    <h2>The Bottom Line</h2>
+    <p>Explainability for frontier AI is not a solved problem, and probably will not be in the next several years. The honest framing is: we have growing partial transparency through attention visualization, mechanistic interpretability, reasoning traces, and citation grounding — combined with statistical safety training through RLHF and active monitoring in production. None of these alone is sufficient; together they form the current best-practice stack.</p>
+    <p>For engineers building on top of these models, the practical lesson is to never rely on the model's safety training as your only guardrail. Layer application-level filtering, retrieval grounding, human review for high-stakes decisions, and continuous monitoring on top of whatever the provider gives you. Trust is built by layering, not by assuming.</p>
+    <p>Validation, performance metrics, and explainability work together: validation tells you the model is reliable on benchmarks, metrics tell you which mistakes it makes and how often, and explainability gives the humans who must answer for the model a way to defend or revise its decisions. Skip any one of these and you are deploying something you cannot honestly stand behind.</p>
+  </div>
+
+  <footer>
+    Derrick Karake · AIML-501 Model Development · Workshop 4 · 3SU2026 · Indiana Wesleyan University
+  </footer>
+</div>
+</body>
+</html>
